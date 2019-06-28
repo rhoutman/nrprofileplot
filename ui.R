@@ -20,18 +20,18 @@ shinyUI(fluidPage(
                              tabPanel("format", 
                                       checkboxInput("origin", label = "force origin y-axis", value = F),
                                       checkboxInput("point", label = "draw points", value = F),
-                                      sliderInput("pointsize", label = h3("point size"), min = 0, 
+                                      sliderInput("pointsize", label ="point size", min = 0, 
                                                   max = 10, value = 2, step= 0.1),
                                       checkboxInput("line", label = "draw line", value = T),
-                                      sliderInput("linesize", label = h3("line size"), min = 0, 
+                                      sliderInput("linesize", label = "line size", min = 0, 
                                                   max = 3, value = 0.5, step=0.1),
-                                      selectInput("colorscheme", label = h3("color scheme"),
+                                      selectInput("colorscheme", label = "color scheme",
                                                   choices = list("divergent", "continuous"),
                                                   selected = 1)
                              ),
                              tabPanel("error bars", 
                                       checkboxInput("errorbars", label = "error bars", value = F),
-                                      selectInput("errorbarannot", label = h3("parameter for errorbars"), 
+                                      selectInput("errorbarannot", label = "parameter for errorbars", 
                                                   choices = list("error"),
                                                   selected = 1)
                              ),
@@ -39,18 +39,18 @@ shinyUI(fluidPage(
                                       checkboxInput("displayp", label = "indicate significance", value = F),
                                       checkboxInput("antagsignificance", label = "smart significance", value = F),
                                       checkboxInput("rotask", label = "rotate asterisks", value = F),
-                                      sliderInput("astsize", label = h3("asterisk size"), min = 0, 
+                                      sliderInput("astsize", label = "asterisk size", min = 0, 
                                                   max = 10, value =2, step=0.1),
-                                      sliderInput("astoffset", label = h3("asterisk offset"), min = 0, 
+                                      sliderInput("astoffset", label = "asterisk offset", min = 0, 
                                                   max = 3, value = 1.1, step=0.1)
                                       ),
                              tabPanel("legend", 
                                       textInput("legtit", "legend.title", ""),
-                                      selectInput("leglabdig", label = h3("legend label digits"),
+                                      selectInput("leglabdig", label ="legend label digits",
                                                   choices = as.list(c(1:4)), selected = 1),
-                                      numericInput("legx", label = h3("leg. pos. x"), value = 0.5),
-                                      numericInput("legy", label = h3("leg. pos. y"), value = 0.95),
-                                      selectInput("legopts", label = h3("legend position"),
+                                      numericInput("legx", label = "leg. pos. x", value = 0.5),
+                                      numericInput("legy", label = "leg. pos. y", value = 0.95),
+                                      selectInput("legopts", label = "legend position",
                                                   choices =list("horizontal", "hide", "separate"), selected = 1)
                              ),
                              tabPanel("titles", 
@@ -59,16 +59,16 @@ shinyUI(fluidPage(
                                       textInput("xtit", "x-axis title", "")
                                       ),
                              tabPanel("facetting", 
-                                      selectInput("facetx", label = h3("horizontal facets"),
+                                      selectInput("facetx", label = "horizontal facets",
                                                   choices =list("none"), selected = 1),
-                                      selectInput("facety", label = h3("vertical facets"),
+                                      selectInput("facety", label = "vertical facets",
                                                   choices =list("none"), selected = 1)
                              ),
                              tabPanel("scales", 
-                                      selectInput("yscale", label = h3("y-scale"),
+                                      selectInput("yscale", label = "y-scale",
                                                   choices =list("global", "free", "manually"), selected = 1),
-                                      numericInput("manymin", label = h3("manual y-min"), value =NULL),
-                                      numericInput("manymax", label = h3("manual y-max"), value = NULL)
+                                      numericInput("manymin", label = "manual y-min", value =NULL),
+                                      numericInput("manymax", label = "manual y-max", value = NULL)
                              )
                              )   
 

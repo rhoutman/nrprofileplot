@@ -182,7 +182,7 @@ if(input$displayp){
  significancecolname <- "p"
   df$significance <- as.character(symnum(df[[significancecolname]], cutpoints=c(0,0.001,0.01,0.05,1), symbols=c('***', '**', '*', '' ), legend=F))
  
-   if(input$antagsignificance){
+  if(input$antagsignificance){
     controlnames <- c("DMSO", "Ethanol", "EtOH", "Solvent", "Vehicle", "Control")
     
     if(length(as.character(ctx()$colors)) > 2){
