@@ -362,7 +362,7 @@ output$rnplot <- renderPlot({
 
 
 
-
+# helper functions are below
 getCtx = function(session){
   # retreive url query parameters provided by tercen
   query = parseQueryString(session$clientData$url_search)
