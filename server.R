@@ -267,9 +267,21 @@ if(input$facetx !="none" | input$facety !="none"){
 }
 
 #manual y scale
+output$yrange <- renderUI({
+  # min = 1.1*min(dataselect$y)
+  # max = 1.1*max(dataselect$y)
+
+  
+  sliderInput("manualy", "y-axis range:",
+              min = 0, max = 1000,
+              value = c(0,1000))
+})
+
+
 if(input$yscale=="manually"){
-  ymin <- input$manymin
-  ymax <- input$manymax
+
+  ymin <- input$manualy[1]
+  ymax <- input$manualy[2]
   p <- p +
     ylim(c(ymin,ymax))
   filename <- paste(filename, ".yman",sep="")

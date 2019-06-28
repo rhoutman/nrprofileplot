@@ -48,8 +48,10 @@ shinyUI(fluidPage(
                                       textInput("legtit", "legend.title", ""),
                                       selectInput("leglabdig", label ="legend label digits",
                                                   choices = as.list(c(1:4)), selected = 1),
-                                      numericInput("legx", label = "leg. pos. x", value = 0.5),
-                                      numericInput("legy", label = "leg. pos. y", value = 0.95),
+                                      sliderInput("legx", label = "horizontal legend posiition", min = -0.2, 
+                                                  max = 1.3, value =0.5, step=0.02),
+                                      sliderInput("legy", label = "vertical legend posiition", min = -0.2, 
+                                                  max = 1.3, value =0.95, step=0.02),
                                       selectInput("legopts", label = "legend position",
                                                   choices =list("horizontal", "hide", "separate"), selected = 1)
                              ),
@@ -67,6 +69,7 @@ shinyUI(fluidPage(
                              tabPanel("scales", 
                                       selectInput("yscale", label = "y-scale",
                                                   choices =list("global", "free", "manually"), selected = 1),
+                                     uiOutput("yrange"),
                                       numericInput("manymin", label = "manual y-min", value =NULL),
                                       numericInput("manymax", label = "manual y-max", value = NULL)
                              )
@@ -116,7 +119,7 @@ shinyUI(fluidPage(
     mainPanel(
       plotOutput("rnplot"),
       dataTableOutput("test"),
-      verbatimTextOutput(("test2")),
+      # verbatimTextOutput(("test2")),
       shinyjs::hidden(p(id = "runStatus", "Processing..."))
   
       
