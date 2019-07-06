@@ -14,8 +14,12 @@ shinyUI(fluidPage(
                  tabsetPanel(type = "tabs",
                              tabPanel("Data", 
                                       uiOutput("colorlist"),
+                                      textInput("colororder", "provide custom color order: \n (separated by comma)", ""),
                                       uiOutput("colfactselect"),
-                                      uiOutput("selectgraph")
+                                      uiOutput("selectgraph"),
+                                      downloadButton("saveplot", "save graph")
+                                      # ,
+                                      # textInput("plotname", "plot name", "mainplot.png")
                                       ),
                              tabPanel("format", 
                                       checkboxInput("origin", label = "force origin y-axis", value = F),
@@ -27,7 +31,13 @@ shinyUI(fluidPage(
                                                   max = 3, value = 0.5, step=0.1),
                                       selectInput("colorscheme", label = "color scheme",
                                                   choices = list("divergent", "continuous"),
-                                                  selected = 1)
+                                                  selected = 1),
+                                      sliderInput("figwidth", label="figure width", 1, 15, value=10.2, step = 0.25, round = FALSE,
+                                                  ticks = TRUE, animate = FALSE, width = NULL, sep = ",", pre = NULL, post = NULL,
+                                                  timeFormat = NULL, timezone = NULL, dragRange = TRUE),
+                                      sliderInput("figheight", label="figure height", 1, 15, value=3.5, step = 0.25, round = FALSE,
+                                                  ticks = TRUE, animate = FALSE, width = NULL, sep = ",", pre = NULL, post = NULL,
+                                                  timeFormat = NULL, timezone = NULL, dragRange = TRUE)
                              ),
                              tabPanel("error bars", 
                                       checkboxInput("errorbars", label = "error bars", value = F),
@@ -61,8 +71,10 @@ shinyUI(fluidPage(
                                       textInput("xtit", "x-axis title", "")
                                       ),
                              tabPanel("facetting", 
-                                      selectInput("facetx", label = "horizontal facets",
-                                                  choices =list("none"), selected = 1),
+                                     # uiOutput("uifacetx"),
+                                     # uiOutput("uifacety"),
+                                     selectInput("facetx", label = "horizontal facets",
+                                                 choices =list("none"), selected = 1),
                                       selectInput("facety", label = "vertical facets",
                                                   choices =list("none"), selected = 1)
                              ),
@@ -94,12 +106,6 @@ shinyUI(fluidPage(
 
 
 # list("significance annotation", "p"),
-
-
-
-# list("fig. width", 10.2),  
-# list("fig. height", 3.5),
-
 # list("file type", list(".png", ".pdf")),
 # list("use for report", list("N", "Y")),
 # list("name report folder", "report"),
@@ -117,11 +123,18 @@ shinyUI(fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("rnplot"),
-      dataTableOutput("test"),
-      # verbatimTextOutput(("test2")),
-      shinyjs::hidden(p(id = "runStatus", "Processing..."))
-  
+      fluidRow(
+        # plotOutput("rnplot"),
+        # dataTableOutput("test"),
+        imageOutput("mainplot", width="3000px"),
+        # verbatimTextOutput(("test2")),
+        shinyjs::hidden(p(id = "runStatus", "Processing..."))
+        
+      ),
+      fluidRow(
+      
+      )
+    
       
     )
   )

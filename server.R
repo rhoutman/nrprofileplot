@@ -2,8 +2,8 @@ options("tercen.serviceUri"="http://tercen:5400/api/v1/")
 options("tercen.username"="admin")
 options("tercen.password"="admin")
 
-# options("tercen.workflowId" = "d30382066b71e6e7995cee981c001603")
-# options("tercen.stepId" = "67-8")
+options("tercen.workflowId" = "d30382066b71e6e7995cee981c001603")
+options("tercen.stepId" = "67-8")
 
 library(shiny)
 library(shinyjs)
@@ -22,16 +22,17 @@ thechoices <- reactive({
  choicelabels %>% make.names() %>% as.list() %>% setNames(choicelabels)
 })
 
+sepoptions <- reactive({
+  exclude <-  c("x", "y", "ri", "ci")
+  
+ thechoices()[!(thechoices() %in% exclude)]
+})
 
 output$colfactselect <- renderUI({
-  exclude <-  c("x", "y", "ri", "ci")
-
-  options <- thechoices()[!(thechoices() %in% exclude)]
-  
+ 
 preselectedcolor <- gsub(pattern="[a-zA-Z]*\\.", replacement="", x= ctx()$colors ) %>% make.names()
 
-
-  pickerInput("selectedcolfact","Color by:", as.list(options), options = list(`actions-box` = TRUE),selected=preselectedcolor, multiple = T)
+  pickerInput("selectedcolfact","Color by:", as.list(sepoptions()), options = list(`actions-box` = TRUE),selected=preselectedcolor, multiple = T)
 
 })
 
@@ -96,6 +97,12 @@ makeplot <- reactive({
   filename = "profile"
   df <- dataselect() %>%
     filter(rcfact==input$graphselect)
+ 
+if(input$colororder !="") {
+  colororder <- paste(str_trim(strsplit(input$colororder, split=",")[[1]]),sep=",")
+  df$color <- factor(df$color, levels = colororder)
+}
+  
 
 p <-   ggplot(df, aes(x, y)) +
     geom_line(aes(color=color, group=color), size=input$linesize)
@@ -238,6 +245,18 @@ if(input$ytit==""){
 
 
 #facetting
+ # output$uifacetx <- renderUI({
+ #   sepoptions <- c("none", sepoptions())
+ #   selectInput("facetx", label = "horizontal facets",
+ #               choices =as.list(sepoptions), selected = 1)
+ # })
+ # 
+ # output$uifacetx <- renderUI({
+ #   sepoptions <- c("none", sepoptions())
+ #   selectInput("facety", label = "vertical facets",
+ #               choices =as.list(sepoptions), selected = 1)
+ # })
+ 
 if(input$facetx !="none" | input$facety !="none"){
 
 
@@ -268,8 +287,11 @@ if(input$facetx !="none" | input$facety !="none"){
 
 #manual y scale
 output$yrange <- renderUI({
-  # min = 1.1*min(dataselect$y)
-  # max = 1.1*max(dataselect$y)
+  
+  arange <<- dataselect
+  # arange <<- arange
+  amin = 1.1*min(arange$y)
+ amax = 1.1*max(arange$y)
 
   
   sliderInput("manualy", "y-axis range:",
@@ -363,10 +385,55 @@ if(asplit !=""){
 return(p)
   })
 
-output$rnplot <- renderPlot({
-  makeplot()
-})
+output$mainplot <- renderImage({
+  outfile <- tempfile(fileext='.png')
 
+  png(outfile,  width=input$figwidth, height= input$figheight, units="in", res=600)
+#   
+ print(makeplot() ) 
+#   # print(tile)
+#   # plotheatmap(tile ,dd.row = clusterdf()$dd.row, dd.col= clusterdf()$dd.col,alegend=  basetile()$alegend,  xvp=input$legendx, yvp= input$legendy,legendsize=input$legendsize, plotfolder = NULL,  filename="heatmap",filetype=".pdf", width=input$figwidth, height=input$figheight)
+  dev.off()
+#   
+#   
+  file.copy(from=outfile, to=file.path("plottemp", "plot.png"),overwrite = T)
+#   
+#   #  Return a list
+  list(src = outfile,
+  contentType = 'image/png',
+       width = input$figwidth *120,
+       height = input$figheight*120,
+       alt = "This is alternate text")
+}, deleteFile = T)
+# 
+output$saveplot <- downloadHandler(
+  filename = "plot.png",
+  content = function(file) {
+    file.copy(file.path("plottemp", "plot.png"), file)
+  }
+)
+
+
+# output$heatmapplot <- renderImage({
+#   # A temp file to save the output.
+#   # This file will be removed later by renderImage
+#   outfile <- tempfile(fileext = '.png')
+#   
+#   # Generate the PNG
+#   png(outfile, width = 400, height = 300)
+#   # makeplot()
+#   
+#   ggplot(data.frame(x=1, y=2), aes(x,y)) +geom_point()
+#   
+#   dev.off()
+#   
+#   # Return a list containing the filename
+#   list(src = outfile,
+#        contentType = 'image/png',
+#        width = 400,
+#        height = 300,
+#        alt = "This is alternate text")
+# }, deleteFile = TRUE)
 
 })
 
