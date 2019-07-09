@@ -2,8 +2,14 @@ options("tercen.serviceUri"="http://tercen:5400/api/v1/")
 options("tercen.username"="admin")
 options("tercen.password"="admin")
 
-options("tercen.workflowId" = "d30382066b71e6e7995cee981c001603")
-options("tercen.stepId" = "67-8")
+#bad
+options("tercen.workflowId" = "a011d075be6a0b003b628aebd300a892")
+options("tercen.stepId" = "15-9")
+
+
+# #good
+# options("tercen.workflowId" = "d30382066b71e6e7995cee981c001603")
+# options("tercen.stepId" = "67-8")
 
 library(shiny)
 library(shinyjs)
@@ -414,27 +420,6 @@ output$saveplot <- downloadHandler(
 )
 
 
-# output$heatmapplot <- renderImage({
-#   # A temp file to save the output.
-#   # This file will be removed later by renderImage
-#   outfile <- tempfile(fileext = '.png')
-#   
-#   # Generate the PNG
-#   png(outfile, width = 400, height = 300)
-#   # makeplot()
-#   
-#   ggplot(data.frame(x=1, y=2), aes(x,y)) +geom_point()
-#   
-#   dev.off()
-#   
-#   # Return a list containing the filename
-#   list(src = outfile,
-#        contentType = 'image/png',
-#        width = 400,
-#        height = 300,
-#        alt = "This is alternate text")
-# }, deleteFile = TRUE)
-
 })
 
 
@@ -471,7 +456,7 @@ if(labelfact %>% length() >0) basicselect <- c(basicselect, labelfact)
 
 df <- ctx$select()
 
-error <- if(".error" %in% colnames(df)) basicselect <- c(basicselect , ".error")
+ if(".error" %in% colnames(df)) basicselect <- c(basicselect , ".error")
 
 basicselect <- basicselect %>% unique()
 
@@ -494,7 +479,8 @@ basicselect <- basicselect %>% unique()
     df <- df %>% 
       left_join(rows, by=".ri")
   }
-  colnames(df) <- gsub(pattern="[a-zA-Z]*\\.", replacement="", x= colnames(df))
+  
+  colnames(df) <- gsub(pattern="[a-zA-Z0-9]*\\.", replacement="", x= colnames(df))
 
   return(df)
 }
