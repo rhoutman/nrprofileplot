@@ -1,15 +1,7 @@
-options("tercen.serviceUri"="http://tercen:5400/api/v1/")
-options("tercen.username"="admin")
-options("tercen.password"="admin")
-
-#bad
-options("tercen.workflowId" = "a011d075be6a0b003b628aebd300a892")
-options("tercen.stepId" = "15-9")
-
-
-# #good
-# options("tercen.workflowId" = "d30382066b71e6e7995cee981c001603")
-# options("tercen.stepId" = "67-8")
+# options("tercen.serviceUri"="http://tercen:5400/api/v1/")
+# options("tercen.username"="admin")
+# options("tercen.password"="admin")
+# 
 
 library(shiny)
 library(shinyjs)
