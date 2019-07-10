@@ -97,14 +97,6 @@ shinyUI(fluidPage(
 
 
 
-
-
-
-
-
-
-
-
 # list("significance annotation", "p"),
 # list("file type", list(".png", ".pdf")),
 # list("use for report", list("N", "Y")),
@@ -127,7 +119,7 @@ shinyUI(fluidPage(
         # plotOutput("rnplot"),
         # dataTableOutput("test"),
         imageOutput("mainplot", width="3000px"),
-        # verbatimTextOutput(("test2")),
+        verbatimTextOutput(("testoutput")),
         shinyjs::hidden(p(id = "runStatus", "Processing..."))
         
       ),
