@@ -471,7 +471,7 @@ basicselect <- basicselect %>% unique()
   
   rows <-  ctx$rselect() 
   if(colnames(rows)  != ".all"){
-    rows$.ci <- rows %>% rownames() %>% as.numeric() -1
+    rows$.ri <- rows %>% rownames() %>% as.numeric() -1
     df <- df %>% 
       left_join(rows, by=".ri")
   }
